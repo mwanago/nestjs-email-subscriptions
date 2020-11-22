@@ -28,6 +28,8 @@
     "@nestjs/microservices": "^7.5.2",
     "@nestjs/platform-express": "^7.5.1",
     "@nestjs/typeorm": "^7.1.4",
+    "amqp-connection-manager": "^3.2.1",
+    "amqplib": "^0.6.0",
     "pg": "^8.5.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
