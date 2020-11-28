@@ -21,6 +21,9 @@ export class SubscribersController {
 
   @GrpcMethod('SubscribersService')
   async getAllSubscribers() {
-    return this.subscribersRepository.find();
+    const data = await this.subscribersRepository.find();
+    return {
+      data
+    }
   }
 }

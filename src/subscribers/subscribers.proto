@@ -3,8 +3,12 @@ syntax = "proto3";
 package subscribers;
 
 service SubscribersService {
-  rpc GetAllSubscribers (GetAllSubscribersParams) returns (stream Subscriber) {}
+  rpc GetAllSubscribers (GetAllSubscribersParams) returns (SubscribersResponse) {}
   rpc AddSubscriber (CreateSubscriberDto) returns (Subscriber) {}
+}
+
+message SubscribersResponse {
+  repeated Subscriber data = 1;
 }
 
 message Subscriber {
