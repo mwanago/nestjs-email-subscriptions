@@ -1,21 +1,26 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { InjectRepository } from '@nestjs/typeorm';
+import Subscriber from './subscriber.entity';
 import CreateSubscriberDto from './dto/createSubscriber.dto';
-import { SubscribersService } from './subscribers.service';
+import { Repository } from 'typeorm';
+import { GrpcMethod } from '@nestjs/microservices';
 
 @Controller()
 export class SubscribersController {
   constructor(
-    private readonly subscribersService: SubscribersService,
+    @InjectRepository(Subscriber)
+    private subscribersRepository: Repository<Subscriber>,
   ) {}
 
-  @MessagePattern({ cmd: 'add-subscriber' })
-  addSubscriber(@Payload() subscriber: CreateSubscriberDto) {
-    return this.subscribersService.addSubscriber(subscriber);
+  @GrpcMethod('SubscribersService')
+  async addSubscriber(subscriber: CreateSubscriberDto) {
+    const newSubscriber = await this.subscribersRepository.create(subscriber);
+    await this.subscribersRepository.save(newSubscriber);
+    return newSubscriber;
   }
 
-  @MessagePattern({ cmd: 'get-all-subscribers' })
-  getAllSubscribers() {
-    return this.subscribersService.getAllSubscribers();
+  @GrpcMethod('SubscribersService')
+  async getAllSubscribers() {
+    return this.subscribersRepository.find();
   }
 }
